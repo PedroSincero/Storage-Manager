@@ -11,7 +11,7 @@ const add = async (name, quantity) => {
 const getByName = async (name) => {
   const db = await connection();
   const addProduct = await db.collection('products').findOne({ name });
-  return addProduct;
+  return addProduct !== null;
 };
 
 module.exports = {
