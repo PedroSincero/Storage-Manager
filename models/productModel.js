@@ -28,10 +28,19 @@ const getAll = async () => {
   return result;
 };
 
+const exclude = async (id) => {
+  const db = await connection();
+  if (!ObjectId.isValid(id)) return null;
+  const productID = await getById(id);
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+  return productID;
+};
+
 module.exports = {
   add,
   getByName,
   getById,
   getAll, 
-  // update, exclude
+  // update, 
+  exclude,
 };
