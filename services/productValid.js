@@ -1,9 +1,16 @@
 const productModel = require('../models/productModel');
 
 const isNameExists = async (name) => {
-  const teste = await productModel.getByName(name);
-  return teste;
+  const result = await productModel.getByName(name);
+  return result;
 };
+
+const isIDExists = async (id) => {
+  const result = await productModel.getById(id);
+  return result;
+};
+
 module.exports = {
   isNameExists,
+  isIDExists,
 };
