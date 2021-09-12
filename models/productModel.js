@@ -24,6 +24,7 @@ const getById = async (id) => {
 const getAll = async () => {
   const db = await connection();
   const result = await db.collection('products').find().toArray();
+  if (!result) return null;
   return result;
 };
 

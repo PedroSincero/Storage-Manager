@@ -38,15 +38,12 @@ const getById = async (req, res) => {
   } 
   
   const productID = await productModel.getById(id);
-  console.log('ID invalido', productID);
   return res.status(200).json(productID);
 };
 
 const getAll = async (_req, res) => {
   const productAll = await productModel.getAll();
-
-  if (!productAll) return res.status(404).json('deu ruim');
-  return res.status(200).json(productAll);
+  return res.status(200).json({ products: productAll });
 };
 
 module.exports = { add, getById, getAll };
