@@ -32,11 +32,26 @@ const update = async (id, sales) => {
    return result;
 };
 
+const exclude = async (id) => {
+  const db = await connection();
+  const result = await db.collection('sales').findOne(ObjectId(id));
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+  console.log('exclude:', result);
+  return result;
+};
+
+const getBySalesId = async (id) => {
+  const db = await connection();
+  if (!ObjectId.isValid(id)) return null;
+  const result = await db.collection('sales').findOne(ObjectId(id));
+  return result;
+};
+
 module.exports = {
   add,
-  // getByName,
+  getBySalesId,
   getById,
   getAll, 
   update, 
-  // exclude,
+  exclude,
 };

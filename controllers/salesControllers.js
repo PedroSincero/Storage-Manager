@@ -1,5 +1,5 @@
 const salesModel = require('../models/salesModel');
-const { validQuantity, isIDExists } = require('../services/salesValid');
+const { validQuantity, isIDExists, isValidID } = require('../services/salesValid');
 
 const add = async (req, res) => {
   const sales = req.body;
@@ -61,12 +61,24 @@ const update = async (req, res) => {
    return res.status(200).json(updateSales);
 };
 
+const exclude = async (req, res) => {
+  const { id } = req.params;
+
+  const isValid = await isValidID(id);
+
+  if (!isValid) {
+    return res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
+  }
+  const excludeSales = await salesModel.exclude(id);
+  return res.status(200).json(excludeSales);
+};
+
 module.exports = { 
   add,
    getById,
     getAll, 
     update,
-  // exclude, 
+  exclude, 
 };
 
 // Agradecimentos a leandro reis Turma 10 - tribo B -- Pelo auxilio no req 5 

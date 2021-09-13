@@ -9,12 +9,17 @@ const validQuantity = (quantity) => {
 };
 
 const isIDExists = async (id) => {
-  // console.log('join SalesValid', id);
   const result = await salesModel.getById(id);
+  return result;
+};
+
+const isValidID = async (id) => {
+  const result = await salesModel.getBySalesId(id);
   return result;
 };
 
 module.exports = {
   validQuantity,
   isIDExists,
+  isValidID,
 };
