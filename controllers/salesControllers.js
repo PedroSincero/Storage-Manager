@@ -3,9 +3,7 @@ const { validQuantity, isIDExists } = require('../services/salesValid');
 
 const add = async (req, res) => {
   const sales = req.body;
-
-  const { productId } = sales[0];
-  const { quantity } = sales[0];
+  const { productId, quantity } = sales[0];
 
   const isValidProductID = await isIDExists(productId);
   const isValidQuantity = validQuantity(quantity);
@@ -45,11 +43,30 @@ const getById = async (req, res) => {
   return res.status(200).json(salesID);
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const sales = req.body;
+  const { quantity } = req.body[0];
+
+  const isValidQuantity = validQuantity(quantity);
+
+  if (isValidQuantity) {
+    return res.status(422).json({ err: { code: 'invalid_data',
+     message: 'Wrong product ID or invalid quantity',
+      } }); 
+   }
+
+   const updateSales = await salesModel.update(id, sales);
+
+   return res.status(200).json(updateSales);
+};
+
 module.exports = { 
   add,
    getById,
     getAll, 
-  // exclude, update 
+    update,
+  // exclude, 
 };
 
 // Agradecimentos a leandro reis Turma 10 - tribo B -- Pelo auxilio no req 5 

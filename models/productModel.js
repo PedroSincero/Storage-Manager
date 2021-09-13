@@ -39,9 +39,11 @@ const exclude = async (id) => {
 const update = async (id, name, quantity) => {
   const db = await connection(); 
   if (!ObjectId.isValid(id)) return null;
-  const productUpdate = await db.collection('products')
+  // const productUpdate = await db.collection('products')
+  // .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
+  await db.collection('products')
   .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
-  console.log(productUpdate);
+  // console.log(productUpdate);
   return { _id: id, name, quantity };
 };
 
