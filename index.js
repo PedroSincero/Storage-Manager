@@ -1,6 +1,6 @@
 // não remova esse endpoint, e para o avaliador funcionar
 const express = require('express');
-const { productRouters } = require('./router/index');
+const { productRouters, salesRouter } = require('./router/index');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +12,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productRouters);
+
+app.use('/sales', salesRouter);
 
 app.listen(PORT, () => {
  console.log(`Ouvindo a porta ${PORT}`);
