@@ -1,16 +1,12 @@
 // const express = require('express');
-const Joi = require('joi');
 const productModel = require('../models/productModel');
-const { isNameExists, isIDExists } = require('../services/productValid');
+const { isNameExists, isIDExists, 
+  validparameters } = require('../services/productValid');
 
 const add = async (req, res) => {
   const { name, quantity } = req.body;
   const isExist = await isNameExists(name);
-
-  const { error } = Joi.object({
-    name: Joi.string().min(5).required(),
-    quantity: Joi.number().min(1).strict(),
-  }).validate({ name, quantity });
+  const error = validparameters(name, quantity);
 
   if (error) {
     return res.status(422).json({ err: { code: 'invalid_data',
@@ -59,4 +55,18 @@ const exclude = async (req, res) => {
   return res.status(200).json(productExclude);
 };
 
-module.exports = { add, getById, getAll, exclude };
+const update = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const error = validparameters(name, quantity);
+
+  if (error) {
+    return res.status(422).json({ err: { code: 'invalid_data',
+    message: error.details[0].message,
+    } });
+  }
+  const productUpdate = await productModel.update(id, name, quantity);
+    return res.status(200).json(productUpdate);
+};
+
+module.exports = { add, getById, getAll, exclude, update };

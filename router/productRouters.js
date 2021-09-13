@@ -9,7 +9,7 @@ router.get('/', productsController.getAll);
 
 router.get('/:id', productsController.getById);
 
-// router.put('/:id');
+router.put('/:id', productsController.update);
 
 router.delete('/:id', productsController.exclude);
 
