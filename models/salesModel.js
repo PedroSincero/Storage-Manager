@@ -10,7 +10,8 @@ const connection = require('./connection');
 
 const getAll = async () => {
   const db = await connection();
-  const result = await db.collection('sales').find.toArray();
+  const result = await db.collection('sales').find().toArray();
+  console.log('join salesModel', result);
   if (!result) return null;
   return result;
 };

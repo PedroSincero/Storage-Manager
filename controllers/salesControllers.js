@@ -35,9 +35,8 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   const { id } = req.params;
   const isExist = await isIDExists(id);
-
   if (!isExist) {
-    return res.status(422).json({ err: { code: 'invalid_data',
+    return res.status(404).json({ err: { code: 'not_found',
     message: 'Sale not found',
      } });
   }
