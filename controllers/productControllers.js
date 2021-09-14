@@ -7,13 +7,13 @@ const add = async (req, res) => {
   const { name, quantity } = req.body;
   const isExist = await isNameExists(name);
   const error = validparameters(name, quantity);
-
   if (error) {
     return res.status(422).json({ err: { code: 'invalid_data',
     message: error.details[0].message,
     } });
   }
   if (isExist) {
+    console.log('passou por aqui');
     return res.status(422).json({ err: { code: 'invalid_data',
    message: 'Product already exists',
     } }); 
@@ -45,11 +45,10 @@ const getAll = async (_req, res) => {
 const exclude = async (req, res) => {
   const { id } = req.params;
   const productExclude = await productModel.exclude(id);
-
   if (!productExclude) {
- return res.status(422).json({ err: { code: 'invalid_data',
-  message: 'Wrong id format',
-   } }); 
+    return res.status(422).json({ err: { code: 'invalid_data',
+    message: 'Wrong id format',
+  } }); 
 }
 
   return res.status(200).json(productExclude);
@@ -59,7 +58,6 @@ const update = async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   const error = validparameters(name, quantity);
-
   if (error) {
     return res.status(422).json({ err: { code: 'invalid_data',
     message: error.details[0].message,

@@ -63,7 +63,6 @@ const update = async (req, res) => {
 
 const exclude = async (req, res) => {
   const { id } = req.params;
-
   const isValid = await isValidID(id);
 
   if (!isValid) {

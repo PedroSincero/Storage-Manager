@@ -2,9 +2,12 @@ const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
  const add = async (sales) => {
+   const { quantity, productId } = sales[0];
   const db = await connection();
   const addSales = await db.collection('sales').insertOne({ itensSold: sales });
   const { itensSold } = addSales.ops[0];
+   await db.collection('products')
+   .updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: -quantity } });
   return { _id: addSales.insertedId, itensSold };
  };
 
@@ -29,14 +32,18 @@ const update = async (id, sales) => {
    await db.collection('sales')
    .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sales } });
    const result = { _id: id, itensSold: sales };
+   console.log(result);
    return result;
 };
 
 const exclude = async (id) => {
   const db = await connection();
   const result = await db.collection('sales').findOne(ObjectId(id));
+  const { quantity, productId } = result.itensSold[0];
+    await db.collection('products')
+    .updateOne({ _id: ObjectId(productId) }, { $inc: { quantity } });
+
   await db.collection('products').deleteOne({ _id: ObjectId(id) });
-  console.log('exclude:', result);
   return result;
 };
 
